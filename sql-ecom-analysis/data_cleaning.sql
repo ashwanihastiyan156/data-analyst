@@ -1,4 +1,14 @@
---checking the content of tables
+/*
+Description:
+This script performs data cleaning, transformation,
+category enrichment, and seller city standardization.
+Data quality checks and indexing are applied for performance.
+*/
+
+
+
+-- Data exploration (for schema validation)
+
 select * from customer.customers_dataset
 limit 100;
 
@@ -30,6 +40,7 @@ limit 100;
 
 --linking the product category name from product_dataset table to
 --the translated version in product_category_name_translatin table
+
 select COUNT (DISTINCT product_category_name) from customer.products_dataset;
 
 select COUNT (DISTINCT product_category_name) FROM customer.product_category_name_translation;
@@ -74,7 +85,6 @@ FROM customer.products_dataset p
 LEFT JOIN customer.product_category_name_translation t
 ON p.product_category_name = t.product_category_name;
 
---SELECT * FROM customer.products_dataset_updated LIMIT 100;
 
 --adding primary key
 ALTER TABLE customer.products_dataset_updated
@@ -121,16 +131,14 @@ INNER JOIN customer.sellers_dataset s
 ON o.seller_id = s.seller_id
 WHERE s.seller_city = '04482255';
 
---deleting this outlier row from related tables
-DELETE FROM customer.order_items_dataset
+--flagging this outlier row from related tables
+ALTER TABLE customer.sellers_dataset
+ADD COLUMN is_valid BOOLEAN DEFAULT TRUE;
+
+UPDATE customer.sellers_dataset
+SET is_valid = FALSE
 WHERE seller_id = 'ceb7b4fb9401cd378de7886317ad1b47';
 
-DELETE FROM customer.sellers_dataset
-WHERE seller_id = 'ceb7b4fb9401cd378de7886317ad1b47';
-
---
-SELECT DISTINCT seller_city, seller_state FROM customer.sellers_dataset
-ORDER BY seller_city;
 
 
 --making a clean and updated (city data labelled) sellers table
