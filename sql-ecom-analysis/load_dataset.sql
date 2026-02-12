@@ -1,3 +1,16 @@
+/*
+Description:
+This script bulk loads CSV datasets into PostgreSQL tables
+using COPY statements. The loading order respects foreign key
+dependencies to ensure referential integrity.
+
+Instructions:
+- Update file paths as per your local system.
+- Execute within a transaction block.
+*/
+
+
+
 COPY customer.geolocation_dataset
 FROM 'D:/Ashwani/SQL/Project/brazil_ecom/olist_geolocation_dataset.csv'
 DELIMITER ','
