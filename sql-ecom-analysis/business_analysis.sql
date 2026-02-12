@@ -1,4 +1,15 @@
-/* -------------JOINS--------------*/
+/*
+========================================================
+E-Commerce Business Analysis
+Description:
+Advanced business KPI analysis using PostgreSQL.
+Includes revenue analysis, review benchmarking,
+seller performance, and customer lifecycle insights.
+========================================================
+*/
+
+
+/* -------------DATA RELATIONSHIP VALIDATION (JOINS)--------------*/
 SELECT
     o.order_id,
     o.order_purchase_timestamp,
@@ -54,6 +65,8 @@ GROUP BY s.seller_state
 ORDER BY revenue DESC;
 
 
+/* ---------------------CUSTOMER VALUE METRICS----------------------------- */
+
 --average order value: average revenue one order generates
 SELECT
     SUM(oi.price + oi.freight_value) / COUNT(DISTINCT o.order_id) AS avg_order_value
@@ -76,7 +89,7 @@ WHERE o.order_status = 'delivered'
 GROUP BY c.customer_unique_id
 ORDER BY customer_lifetime_value DESC;
 
-/* I used "custome_unique_id", because "customer_id" is unique per order, but "customer_unique_id" is unique per customer.*/
+/* Used "custome_unique_id", because "customer_id" is unique per order, but "customer_unique_id" is unique per customer.*/
 
 
 --revenue per seller: revenue each seller generates
@@ -126,7 +139,10 @@ GROUP BY c.customer_state
 ORDER BY avg_delivery_days;
 
 
-/*----------BUSINESS ANALYSIS INSIGHTS------------*/
+/*==========================BUSINESS ANALYSIS INSIGHTS==========================*/
+
+
+/*------------------------TIME-SERIES ANALYSIS----------------------*/
 
 --month over month revenue growth
 WITH monthly_revenue AS (
@@ -181,6 +197,7 @@ JOIN customer.order_items_dataset oi
 WHERE o.order_status = 'delivered';
 
 
+/*------------------------RANKING & CONTRIBUTION ANALYSIS--------------------*/
 
 --rank of sellers by revenue in a state
 SELECT
@@ -299,7 +316,9 @@ JOIN customer.products_dataset_updated p
 
 
 
-/*----------------ANALYSIS VIEWS-----------------*/
+/*==============================ANALYSIS VIEWS================================*/
+
+/*-----------------REVIEW & QUALITY BENCHMARKING-------------------*/
 
 --base view
 CREATE VIEW category_review_benchmark AS
@@ -336,8 +355,11 @@ SELECT
 FROM category_review_benchmark
 GROUP BY product_category_eng
 ORDER BY percentage_of_below_avg_review_orders DESC;
---diapers_and_hygiene and security_and_services have more than or equal to 50% of orders
---rated below their category average, indicating persistent quality or fulfillment issues.
+-- Insight:
+-- Categories such as diapers_and_hygiene and security_and_services
+-- exhibit >50% below-average review rates, indicating persistent
+-- quality or fulfillment performance issues.
+
 
 
 --are low review scores clustered in certain categories? (Assuming review score 2 or less as low)
@@ -382,7 +404,7 @@ ORDER BY c.revenue DESC;
 --Certain categories (cool_stuff, stationery, computers) consistently maintain low-review rates below 12%, suggesting better product quality control or fulfillment reliability compared to the platform average
 
 
-/*----------------seller performance view--------------*/
+/*----------------SELLER PERFORMANCE ANALYSIS--------------*/
 CREATE VIEW seller_performance_view AS
 SELECT
     s.seller_id,
@@ -434,7 +456,7 @@ WHERE cumulative_low_review_pct <= 0.80;
 
 
 
-/*--------------customer lifecycle--------------------*/
+/*--------------CUSTOMER LIFECYCLE ANALYSIS--------------------*/
 
 CREATE VIEW customer_lifecycle_view AS
 SELECT
@@ -465,6 +487,7 @@ GROUP BY customer_type;
 -- first time: 93358 and repeat: 2801
 
 
+/*------------------DELIVERY PERFORMANCE & CUSTOMER SATISFACTION----------------*/
 
 --delivery delay impact on review scores
 SELECT
@@ -485,6 +508,7 @@ WHERE o.order_status = 'delivered'
   AND o.order_delivered_customer_date IS NOT NULL
   AND o.order_estimated_delivery_date IS NOT NULL
 GROUP BY delivery_status;
+
 
 
 --delivery delay duration vs review scores
