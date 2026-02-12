@@ -1,3 +1,13 @@
+/*
+Description:
+This script validates dataset integrity by checking:
+- Duplicate primary keys
+- Row counts
+- Date ranges
+- NULL value consistency
+*/
+
+
 --checking the duplicates in tables
 
 SELECT
@@ -71,7 +81,8 @@ FROM customer.product_category_name_translation
 GROUP BY product_category_name
 HAVING COUNT(*) > 1;
 
---no duplicates found
+---- Result: No duplicate records detected in primary key columns.
+
 
 --row counts
 SELECT COUNT(*) FROM customer.customers_dataset;
@@ -86,7 +97,8 @@ SELECT
     MIN(order_purchase_timestamp),
     MAX(order_purchase_timestamp)
 FROM customer.orders_dataset;
--- sep 2016 to oct 2018
+-- Data covers period: Sept 2016 – Oct 2018
+
 
 
 --checking for null values
