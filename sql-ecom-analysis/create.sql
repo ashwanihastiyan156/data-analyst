@@ -1,3 +1,12 @@
+/*
+Project: E-Commerce Data Warehouse Setup
+Author: Ashwani Kumar
+Description:
+This script creates normalized relational tables for an e-commerce dataset,
+including constraints, foreign keys, and indexes to ensure data integrity and performance.
+*/
+
+
 CREATE TABLE customer.geolocation_dataset
 (
     geolocation_zip_code_prefix NUMERIC,
