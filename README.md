@@ -1,5 +1,5 @@
 ## Ashwani Kumar
-## Data Analytics | NLP | Machine Learning | SQL | Automation  
+**Data Analytics | NLP | Machine Learning | SQL | Automation  **
 
 I am a PGDM (Big Data Analytics) candidate with hands-on experience in building data-driven solutions across NLP, SQL analytics, and automation pipelines. My projects focus on transforming unstructured data into structured, decision-ready insights.
 
@@ -25,5 +25,5 @@ Performed advanced SQL analysis on 99K+ orders to evaluate revenue trends, custo
 6. API Integration & Automation
 
 
-## Open to roles in Data Analytics, Business Intelligence, and Data Science.
+**Open to roles in Data Analytics, Business Intelligence, and Data Science.**
 
